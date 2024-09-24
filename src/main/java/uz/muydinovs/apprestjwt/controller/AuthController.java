@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,13 @@ public class AuthController {
     @Autowired
     JwtProvider jwtProvider;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
     public HttpEntity<?> loginToSystem(@RequestBody LoginDto loginDto) {
         UserDetails userDetails = myAuthService.loadUserByUsername(loginDto.getUsername());
-        boolean existUser = userDetails.getPassword().equals(loginDto.getPassword());
-        System.out.println(userDetails.getUsername());
-        System.out.println(userDetails.getPassword());
+        boolean existUser = passwordEncoder.matches(loginDto.getPassword(), userDetails.getPassword());
         if (existUser) {
             String token = jwtProvider.generateToken(loginDto.getUsername());
             return ResponseEntity.ok(token);

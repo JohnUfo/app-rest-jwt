@@ -9,10 +9,10 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    private static final String secretKey = "BuTokenningMaxfiySoziHechKimBilmasim123456789012341234123421341241241234213412354rfgfdvcrtfbfdbfgvbfdbv"; // generates a secure key for HS512
-    private static  final long expireTime = 36_000_000;
+    private final String secretKey = "BuTokenningMaxfiySoziHechKimBilmasim123456789012341234123421341241241234213412354rfgfdvcrtfbfdbfgvbfdbv"; // generates a secure key for HS512
+    private final long expireTime = 36_000_000;
 
-    public static String generateToken(String username) {
+    public String generateToken(String username) {
         Date date = new Date(System.currentTimeMillis() + expireTime);
         return Jwts
                 .builder().setSubject(username)

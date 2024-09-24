@@ -21,10 +21,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    final
+    @Autowired
     MyAuthService myAuthService;
 
-    public SecurityConfig(MyAuthService myAuthService) {
+    @Autowired
+    public void setMyAuthService(MyAuthService myAuthService) {
         this.myAuthService = myAuthService;
     }
 
@@ -43,5 +44,10 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return myAuthService;
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
