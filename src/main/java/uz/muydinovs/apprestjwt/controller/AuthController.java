@@ -26,8 +26,12 @@ public class AuthController {
     @PostMapping("/login")
     public HttpEntity<?> loginToSystem(@RequestBody LoginDto loginDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDto.getUsername(),
+                    loginDto.getPassword()));
+
             String token = jwtProvider.generateToken(loginDto.getUsername());
+
             return ResponseEntity.ok(token);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Username or password is incorrect");
